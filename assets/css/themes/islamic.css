@@ -1,0 +1,62 @@
+/* Islamic Theme */
+.jadwal-sholat-container.jsm-tema-islamic .jsm-header {
+  background: linear-gradient(135deg, #4a8c5f 0%, #1e5631 100%);
+  color: white;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-select {
+  border: 1px solid #2d5a3d;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-loading {
+  background: #f1f8f4;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4a8c5f;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-lokasi {
+  background: #2d5a3d;
+  color: white;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-next-prayer {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border-bottom: 1px solid #a5d6a7;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-countdown-timer {
+  color: #2e7d32;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-waktu-item.jsm-next {
+  background: #e8f5e9;
+  border-left: 4px solid #4caf50;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-waktu-label {
+  color: #1b5e20;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-waktu-value {
+  color: #4a8c5f;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-footer {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.jadwal-sholat-container.jsm-tema-islamic .jsm-error {
+  background: #ffebee;
+  color: #c62828;
+}

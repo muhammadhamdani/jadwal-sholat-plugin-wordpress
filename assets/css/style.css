@@ -1,0 +1,189 @@
+/* Base Styles untuk semua tema */
+.jadwal-sholat-container {
+  max-width: 500px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.jadwal-sholat-container .jsm-header {
+  padding: 20px;
+  text-align: center;
+}
+
+.jadwal-sholat-container .jsm-header h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5em;
+}
+
+.jadwal-sholat-container .jsm-date-display {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  opacity: 0.9;
+}
+
+.jadwal-sholat-container .jsm-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jadwal-sholat-container .jsm-select {
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.jadwal-sholat-container .jsm-loading {
+  text-align: center;
+  padding: 30px;
+  display: none;
+}
+
+.jadwal-sholat-container .jsm-spinner {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.jadwal-sholat-container .jsm-result {
+  background: white;
+}
+
+.jadwal-sholat-container .jsm-jadwal {
+  padding: 0;
+}
+
+.jadwal-sholat-container .jsm-lokasi {
+  padding: 15px;
+  text-align: center;
+}
+
+.jadwal-sholat-container .jsm-lokasi h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.2em;
+}
+
+.jadwal-sholat-container .jsm-lokasi p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.jadwal-sholat-container .jsm-next-prayer {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.jadwal-sholat-container .jsm-next-prayer p {
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+.jadwal-sholat-container .jsm-countdown {
+  margin-top: 10px;
+}
+
+.jadwal-sholat-container .jsm-countdown-text {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.jadwal-sholat-container .jsm-countdown-timer {
+  font-size: 1.5em;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.jadwal-sholat-container .jsm-waktu-list {
+  padding: 0;
+}
+
+.jadwal-sholat-container .jsm-waktu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.3s ease;
+}
+
+.jadwal-sholat-container .jsm-waktu-item:last-child {
+  border-bottom: none;
+}
+
+.jadwal-sholat-container .jsm-waktu-item:nth-child(odd) {
+  background: #f7fafc;
+}
+
+.jadwal-sholat-container .jsm-waktu-item.jsm-next {
+  border-left: 4px solid;
+}
+
+.jadwal-sholat-container .jsm-waktu-label {
+  font-weight: 600;
+}
+
+.jadwal-sholat-container .jsm-waktu-value {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.jadwal-sholat-container .jsm-footer {
+  padding: 10px;
+  text-align: center;
+  font-size: 0.8em;
+  opacity: 0.7;
+  border-top: 1px solid #e2e8f0;
+}
+
+.jadwal-sholat-container .jsm-error {
+  padding: 15px;
+  text-align: center;
+  display: none;
+}
+
+/* Keyframes untuk spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .jadwal-sholat-container {
+    margin: 0 10px;
+  }
+
+  .jadwal-sholat-container .jsm-header {
+    padding: 15px;
+  }
+
+  .jadwal-sholat-container .jsm-header h3 {
+    font-size: 1.3em;
+  }
+
+  .jadwal-sholat-container .jsm-waktu-item {
+    padding: 10px 15px;
+  }
+
+  .jadwal-sholat-container .jsm-waktu-value {
+    font-size: 1em;
+  }
+
+  .jadwal-sholat-container .jsm-countdown-timer {
+    font-size: 1.2em;
+  }
+}

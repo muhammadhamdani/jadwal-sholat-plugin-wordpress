@@ -1,0 +1,72 @@
+/* Modern Theme (Default) */
+.jadwal-sholat-container.jsm-tema-modern .jsm-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-select {
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-loading {
+  background: #f8f9fa;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-lokasi {
+  background: #4a5568;
+  color: white;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-next-prayer {
+  background: #e6fffa;
+  color: #234e52;
+  border-bottom: 1px solid #b2f5ea;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-countdown-timer {
+  color: #2c7a7b;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-waktu-item.jsm-next {
+  background: #ebf8ff;
+  border-left: 4px solid #3182ce;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-waktu-label {
+  color: #2d3748;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-waktu-value {
+  color: #667eea;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-footer {
+  background: #f7fafc;
+  color: #718096;
+}
+
+.jadwal-sholat-container.jsm-tema-modern .jsm-error {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+/* Keyframes untuk spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
