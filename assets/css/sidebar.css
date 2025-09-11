@@ -1,0 +1,134 @@
+/* Sidebar-specific styles */
+.widget_jadwal_sholat_widget .jadwal-sholat-container {
+  max-width: 100%;
+  margin: 0;
+}
+
+.widget_jadwal_sholat_widget .jsm-header h3 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.widget_jadwal_sholat_widget .jsm-date-display {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.widget_jadwal_sholat_widget .jsm-waktu-item {
+  padding: 8px 12px;
+}
+
+.widget_jadwal_sholat_widget .jsm-waktu-label {
+  font-size: 0.9em;
+}
+
+.widget_jadwal_sholat_widget .jsm-waktu-value {
+  font-size: 1em;
+}
+
+.widget_jadwal_sholat_widget .jsm-next-prayer {
+  padding: 10px;
+}
+
+.widget_jadwal_sholat_widget .jsm-next-prayer p {
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.widget_jadwal_sholat_widget .jsm-countdown-timer {
+  font-size: 1.2em;
+}
+
+.widget_jadwal_sholat_widget .jsm-footer {
+  padding: 8px;
+  font-size: 0.7em;
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .widget_jadwal_sholat_widget .jsm-header h3 {
+    font-size: 1.1em;
+  }
+
+  .widget_jadwal_sholat_widget .jsm-waktu-item {
+    padding: 6px 8px;
+  }
+
+  .widget_jadwal_sholat_widget .jsm-countdown-timer {
+    font-size: 1em;
+  }
+}
+
+/* Sidebar-specific styles */
+.widget_jadwal_sholat_widget .jadwal-sholat-container {
+  max-width: 100%;
+  margin: 0;
+}
+
+.widget_jadwal_sholat_widget .jsm-header h3 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.widget_jadwal_sholat_widget .jsm-date-display {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.widget_jadwal_sholat_widget .jsm-waktu-item {
+  padding: 8px 12px;
+}
+
+.widget_jadwal_sholat_widget .jsm-waktu-label {
+  font-size: 0.9em;
+}
+
+.widget_jadwal_sholat_widget .jsm-waktu-value {
+  font-size: 1em;
+}
+
+.widget_jadwal_sholat_widget .jsm-next-prayer {
+  padding: 10px;
+}
+
+.widget_jadwal_sholat_widget .jsm-next-prayer p {
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.widget_jadwal_sholat_widget .jsm-countdown {
+  margin-top: 8px;
+}
+
+.widget_jadwal_sholat_widget .jsm-countdown-text {
+  font-size: 0.8em;
+  margin-bottom: 4px;
+}
+
+.widget_jadwal_sholat_widget .jsm-countdown-timer {
+  font-size: 1.1em;
+}
+
+.widget_jadwal_sholat_widget .jsm-footer {
+  padding: 8px;
+  font-size: 0.7em;
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .widget_jadwal_sholat_widget .jsm-header h3 {
+    font-size: 1.1em;
+  }
+
+  .widget_jadwal_sholat_widget .jsm-waktu-item {
+    padding: 6px 8px;
+  }
+
+  .widget_jadwal_sholat_widget .jsm-countdown-timer {
+    font-size: 1em;
+  }
+
+  .widget_jadwal_sholat_widget .jsm-countdown-text {
+    font-size: 0.7em;
+  }
+}

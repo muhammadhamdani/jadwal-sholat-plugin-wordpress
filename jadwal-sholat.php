@@ -23,17 +23,18 @@ define('JSM_VERSION', '1.4.0');
 
 // Include the main class
 require_once JSM_PLUGIN_PATH . 'includes/class-jadwal-sholat.php';
+require_once JSM_PLUGIN_PATH . 'includes/class-jadwal-sholat-widget.php';
 
 // Initialize the plugin
 function jsm_init_plugin()
 {
-    $jadwal_sholat = new Jadwal_Sholat_MyQuran();
+    $jadwal_sholat = new Jadwal_Sholat();
     $jadwal_sholat->init();
 }
 add_action('plugins_loaded', 'jsm_init_plugin');
 
 // Register activation hook
-register_activation_hook(__FILE__, array('Jadwal_Sholat_MyQuran', 'activate'));
+register_activation_hook(__FILE__, array('Jadwal_Sholat', 'activate'));
 
 // Register deactivation hook
-register_deactivation_hook(__FILE__, array('Jadwal_Sholat_MyQuran', 'deactivate'));
+register_deactivation_hook(__FILE__, array('Jadwal_Sholat', 'deactivate'));

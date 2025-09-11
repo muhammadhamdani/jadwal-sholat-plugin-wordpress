@@ -1,5 +1,5 @@
 <?php
-class Jadwal_Sholat_MyQuran
+class Jadwal_Sholat
 {
 
     private $default_kota;
@@ -21,7 +21,7 @@ class Jadwal_Sholat_MyQuran
         add_action('wp_ajax_get_kota_list', array($this, 'get_kota_list_ajax'));
         add_action('wp_ajax_nopriv_get_kota_list', array($this, 'get_kota_list_ajax'));
 
-        // Add admin menu
+        // Add admin menu - PERBAIKAN: Method ini harus ada
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_init', array($this, 'settings_init'));
     }
@@ -40,31 +40,41 @@ class Jadwal_Sholat_MyQuran
     public static function deactivate()
     {
         // Clean up if needed
+        delete_transient('jsm_kota_list');
     }
 
     public function enqueue_scripts()
     {
-        wp_enqueue_style('jadwal-sholat-style', JSM_PLUGIN_URL . 'assets/css/style.css', array(), JSM_VERSION);
+        // Only enqueue if not already enqueued
+        if (!wp_style_is('jadwal-sholat-style', 'enqueued')) {
+            wp_enqueue_style('jadwal-sholat-style', JSM_PLUGIN_URL . 'assets/css/style.css', array(), JSM_VERSION);
 
-        // Load theme-specific CSS hanya jika bukan tema modern default
-        if ($this->desain_tema != 'modern') {
-            wp_enqueue_style('jadwal-sholat-theme', JSM_PLUGIN_URL . 'assets/css/themes/' . $this->desain_tema . '.css', array('jadwal-sholat-style'), JSM_VERSION);
-        } else {
-            // Untuk tema modern, load CSS modern secara langsung
-            wp_enqueue_style('jadwal-sholat-modern', JSM_PLUGIN_URL . 'assets/css/themes/modern.css', array('jadwal-sholat-style'), JSM_VERSION);
+            // Load sidebar CSS if in sidebar
+            if (is_active_widget(false, false, 'jadwal_sholat_widget', true)) {
+                wp_enqueue_style('jadwal-sholat-sidebar', JSM_PLUGIN_URL . 'assets/css/sidebar.css', array('jadwal-sholat-style'), JSM_VERSION);
+            }
+
+            // Load theme-specific CSS
+            if ($this->desain_tema != 'modern') {
+                wp_enqueue_style('jadwal-sholat-theme', JSM_PLUGIN_URL . 'assets/css/themes/' . $this->desain_tema . '.css', array('jadwal-sholat-style'), JSM_VERSION);
+            } else {
+                wp_enqueue_style('jadwal-sholat-modern', JSM_PLUGIN_URL . 'assets/css/themes/modern.css', array('jadwal-sholat-style'), JSM_VERSION);
+            }
         }
 
-        wp_enqueue_script('jadwal-sholat-script', JSM_PLUGIN_URL . 'assets/js/script.js', array('jquery'), JSM_VERSION, true);
+        if (!wp_script_is('jadwal-sholat-script', 'enqueued')) {
+            wp_enqueue_script('jadwal-sholat-script', JSM_PLUGIN_URL . 'assets/js/script.js', array('jquery'), JSM_VERSION, true);
 
-        wp_localize_script('jadwal-sholat-script', 'jsm_ajax', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('jsm_nonce'),
-            'default_kota' => $this->default_kota,
-            'today' => date('Y-m-d'),
-            'desain_tema' => $this->desain_tema
-        ));
+            wp_localize_script('jadwal-sholat-script', 'jsm_ajax', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('jsm_nonce'),
+                'default_kota' => $this->default_kota,
+                'today' => date('Y-m-d'),
+                'desain_tema' => $this->desain_tema
+            ));
+        }
     }
-    
+
     public function jadwal_sholat_shortcode($atts)
     {
         $atts = shortcode_atts(array(
@@ -72,27 +82,27 @@ class Jadwal_Sholat_MyQuran
             'tema' => $this->desain_tema
         ), $atts, 'jadwal_sholat');
 
-        // Override theme if specified in shortcode
-        $tema = $atts['tema'];
+        // Ensure scripts are loaded
+        $this->enqueue_scripts();
 
         ob_start();
 ?>
-        <div class="jadwal-sholat-container jsm-tema-<?php echo esc_attr($tema); ?>">
+        <div class="jadwal-sholat-container jsm-tema-<?php echo esc_attr($atts['tema']); ?>" data-kota="<?php echo esc_attr($atts['kota']); ?>">
             <div class="jsm-header">
                 <h3>Jadwal Sholat Hari Ini</h3>
                 <div class="jsm-date-display"><?php echo date_i18n('l, j F Y'); ?></div>
                 <div class="jsm-controls">
-                    <select id="jsm-select-kota" class="jsm-select">
+                    <select class="jsm-select-kota jsm-select">
                         <option value="">Pilih Kota...</option>
                     </select>
                 </div>
             </div>
-            <div id="jsm-loading" class="jsm-loading" style="display: none;">
+            <div class="jsm-loading" style="display: none;">
                 <div class="jsm-spinner"></div>
                 <p>Memuat data...</p>
             </div>
-            <div id="jsm-result" class="jsm-result"></div>
-            <div id="jsm-error" class="jsm-error" style="display: none;"></div>
+            <div class="jsm-result"></div>
+            <div class="jsm-error" style="display: none;"></div>
         </div>
     <?php
         return ob_get_clean();
@@ -132,6 +142,7 @@ class Jadwal_Sholat_MyQuran
         check_ajax_referer('jsm_nonce', 'nonce');
 
         $kota_id = isset($_POST['kota_id']) ? intval($_POST['kota_id']) : 0;
+        $unique_id = isset($_POST['unique_id']) ? sanitize_text_field($_POST['unique_id']) : '';
         $tanggal = date('Y-m-d'); // Selalu gunakan tanggal hari ini
 
         if (!$kota_id) {
@@ -151,7 +162,7 @@ class Jadwal_Sholat_MyQuran
 
         if ($data && isset($data['data'])) {
             ob_start();
-            $this->display_jadwal($data['data']);
+            $this->display_jadwal($data['data'], $unique_id);
             $html = ob_get_clean();
             wp_send_json_success($html);
         } else {
@@ -159,7 +170,7 @@ class Jadwal_Sholat_MyQuran
         }
     }
 
-    private function display_jadwal($data)
+    private function display_jadwal($data, $unique_id = '')
     {
         if (!isset($data['jadwal'])) {
             echo '<p>Data jadwal tidak tersedia</p>';
@@ -195,7 +206,7 @@ class Jadwal_Sholat_MyQuran
         // Hitung countdown jika sholat berikutnya adalah hari ini
         $countdown_html = '';
         if ($sholat_berikutnya && $waktu_berikutnya) {
-            $countdown_html = $this->generate_countdown_html($waktu_berikutnya);
+            $countdown_html = $this->generate_countdown_html($waktu_berikutnya, $unique_id);
         }
     ?>
         <div class="jsm-jadwal">
@@ -249,46 +260,25 @@ class Jadwal_Sholat_MyQuran
     <?php
     }
 
-    private function generate_countdown_html($waktu_sholat)
+    private function generate_countdown_html($waktu_sholat, $unique_id = '')
     {
+        // Gunakan unique ID jika disediakan
+        $hours_id = $unique_id ? $unique_id . 'countdown-hours' : 'jsm-countdown-hours';
+        $minutes_id = $unique_id ? $unique_id . 'countdown-minutes' : 'jsm-countdown-seconds';
+        $seconds_id = $unique_id ? $unique_id . 'countdown-seconds' : 'jsm-countdown-seconds';
+
         return '
-        <div class="jsm-countdown">
-            <div class="jsm-countdown-text">Menuju sholat:</div>
-            <div class="jsm-countdown-timer">
-                <span id="jsm-countdown-hours">00</span>:
-                <span id="jsm-countdown-minutes">00</span>:
-                <span id="jsm-countdown-seconds">00</span>
-            </div>
+    <div class="jsm-countdown" data-waktu="' . esc_attr($waktu_sholat) . '">
+        <div class="jsm-countdown-text">Menuju sholat:</div>
+        <div class="jsm-countdown-timer">
+            <span id="' . $hours_id . '">00</span>:
+            <span id="' . $minutes_id . '">00</span>:
+            <span id="' . $seconds_id . '">00</span>
         </div>
-        <script>
-            jQuery(document).ready(function($) {
-                function updateCountdown() {
-                    var now = new Date();
-                    var targetTime = new Date();
-                    var timeParts = "' . esc_js($waktu_sholat) . '".split(":");
-                    
-                    targetTime.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]), 0, 0);
-                    
-                    if (targetTime < now) {
-                        targetTime.setDate(targetTime.getDate() + 1);
-                    }
-                    
-                    var diff = targetTime - now;
-                    var hours = Math.floor(diff / (1000 * 60 * 60));
-                    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                    
-                    $("#jsm-countdown-hours").text(hours.toString().padStart(2, "0"));
-                    $("#jsm-countdown-minutes").text(minutes.toString().padStart(2, "0"));
-                    $("#jsm-countdown-seconds").text(seconds.toString().padStart(2, "0"));
-                }
-                
-                updateCountdown();
-                setInterval(updateCountdown, 1000);
-            });
-        </script>';
+    </div>';
     }
 
+    // PERBAIKAN: Method add_admin_menu harus ada
     public function add_admin_menu()
     {
         add_options_page(
@@ -300,6 +290,7 @@ class Jadwal_Sholat_MyQuran
         );
     }
 
+    // PERBAIKAN: Method settings_init harus ada
     public function settings_init()
     {
         register_setting('jsm_pluginPage', 'jsm_settings');
@@ -328,6 +319,7 @@ class Jadwal_Sholat_MyQuran
         );
     }
 
+    // PERBAIKAN: Method default_kota_render harus ada
     public function default_kota_render()
     {
         $options = get_option('jsm_settings');
@@ -360,6 +352,7 @@ class Jadwal_Sholat_MyQuran
     <?php
     }
 
+    // PERBAIKAN: Method desain_tema_render harus ada
     public function desain_tema_render()
     {
         $options = get_option('jsm_settings');
@@ -375,11 +368,13 @@ class Jadwal_Sholat_MyQuran
     <?php
     }
 
+    // PERBAIKAN: Method settings_section_callback harus ada
     public function settings_section_callback()
     {
         echo '<p>Atur pengaturan default untuk plugin Jadwal Sholat</p>';
     }
 
+    // PERBAIKAN: Method options_page harus ada
     public function options_page()
     {
     ?>
