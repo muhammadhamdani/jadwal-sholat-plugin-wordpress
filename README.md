@@ -1,4 +1,3 @@
-
 # 🕌 Plugin Jadwal Sholat WordPress
 Plugin WordPress untuk menampilkan jadwal sholat dengan data dari api.myquran.com. Plugin ini menyediakan tampilan yang responsive dan beberapa pilihan tema desain.
 
@@ -8,21 +7,13 @@ Plugin WordPress untuk menampilkan jadwal sholat dengan data dari api.myquran.co
 
 ## ✨ Fitur
 ✅ Menampilkan jadwal sholat untuk hari ini
-
 ✅ Pilihan kota dari seluruh Indonesia (api.myquran.com)
-
 ✅ 4 tema desain berbeda: Modern, Islamic, Minimal, dan Dark Mode
-
 ✅ Countdown otomatis menuju sholat berikutnya
-
 ✅ Auto-refresh setiap 1 menit
-
 ✅ Tampilan responsive yang bekerja di semua perangkat
-
 ✅ Admin panel untuk pengaturan default
-
 ✅ Shortcode mudah digunakan
-
 ✅ Caching data untuk performa optimal
 
 ## 📦 Instalasi
@@ -50,12 +41,11 @@ git clone https://github.com/muhammadhamdani/jadwal-sholat-plugin-wordpress.git
 ## ⚙️ Konfigurasi
 
 Setelah plugin aktif, buka Settings → Jadwal Sholat untuk mengatur:
-
 Kota Default – Pilih kota default yang akan ditampilkan.
-
 Tema Desain – Pilih antara Modern, Islamic, Minimal, atau Dark Mode
 
 ## 🚀 Penggunaan
+
 ### Shortcode Dasar
 ```[jadwal_sholat]```
 
@@ -63,9 +53,7 @@ Tema Desain – Pilih antara Modern, Islamic, Minimal, atau Dark Mode
 ```[jadwal_sholat kota="1101" tema="islamic"]```
 
 Parameter yang Tersedia
-
 kota → ID kota (default: sesuai pengaturan admin).
-
 tema → modern | islamic | minimal | dark (default: sesuai pengaturan admin).
 
 Contoh Penggunaan dalam Template
@@ -75,33 +63,23 @@ Contoh Penggunaan dalam Template
 ## 🎨 Tema Desain
 
 Plugin ini menyediakan 4 pilihan tema desain:
-
 Modern 🌈 – Default dengan gradien biru dan ungu.
-
 Islamic ☪️ – Nuansa hijau Islami yang menenangkan.
-
 Minimal ⚪ – Warna netral dan desain bersih.
-
 Dark Mode 🌙 – Tampilan gelap untuk malam hari.
 
 ## 🔌 API yang Digunakan
 
 Plugin ini menggunakan api.quran.com:
-
 Daftar kota → /sholat/kota/semua
-
 Jadwal sholat → /sholat/jadwal/{kota_id}/{tanggal}
-
 ⏱ Data akan di-cache selama 24 jam untuk performa optimal.
 
 ## 📱 Tampilan Responsive
 
 Plugin didesain untuk bekerja di semua perangkat:
-
 📱 Mobile – Tampilan optimal di smartphone
-
 📟 Tablet – Layout yang nyaman di tablet
-
 💻 Desktop – Tampilan penuh di desktop
 
 ## 📜 Lisensi

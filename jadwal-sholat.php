@@ -4,7 +4,7 @@
  * Plugin Name: Jadwal Sholat
  * Plugin URI: https://github.com/muhammadhamdani/jadwal-sholat-plugin-wordpress
  * Description: Plugin untuk menampilkan jadwal sholat
- * Version: 1.0
+ * Version: 1.4
  * Author: Muhammad Chamdani Sukron
  * Author URI: https://github.com/muhammadhamdani
  * License: GPL v2 or later

@@ -20,7 +20,6 @@ class Jadwal_Sholat_Widget extends WP_Widget
 
     public function widget($args, $instance)
     {
-        // Pastikan class Jadwal_Sholat sudah ada
         if (!class_exists('Jadwal_Sholat')) {
             return;
         }
@@ -28,19 +27,29 @@ class Jadwal_Sholat_Widget extends WP_Widget
         $jadwal_sholat = new Jadwal_Sholat();
         $jadwal_sholat->enqueue_scripts();
 
-        echo $args['before_widget'];
+        echo wp_kses_post($args['before_widget']);
 
         $title = !empty($instance['title']) ? apply_filters('widget_title', $instance['title']) : 'Jadwal Sholat';
-        $kota = !empty($instance['kota']) ? $instance['kota'] : '';
-        $tema = !empty($instance['tema']) ? $instance['tema'] : 'modern';
+        $kota  = !empty($instance['kota']) ? $instance['kota'] : '';
+        $tema  = !empty($instance['tema']) ? $instance['tema'] : 'modern';
 
-        echo $args['before_title'] . $title . $args['after_title'];
+        if (! empty($title)) {
+            echo wp_kses_post($args['before_title']);
+            echo esc_html($title);
+            echo wp_kses_post($args['after_title']);
+        }
 
-        // Gunakan shortcode dengan parameter
-        echo do_shortcode("[jadwal_sholat kota='$kota' tema='$tema']");
+        echo do_shortcode(
+            sprintf(
+                '[jadwal_sholat kota="%s" tema="%s"]',
+                esc_attr($kota),
+                esc_attr($tema)
+            )
+        );
 
-        echo $args['after_widget'];
+        echo wp_kses_post($args['after_widget']);
     }
+
 
     public function form($instance)
     {
@@ -64,17 +73,24 @@ class Jadwal_Sholat_Widget extends WP_Widget
 ?>
 
         <p>
-            <label for="<?php echo $this->get_field_id('title'); ?>">Judul:</label>
-            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                name="<?php echo $this->get_field_name('title'); ?>" type="text"
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
+                <?php esc_html_e('Judul:', 'jadwal-sholat'); ?>
+            </label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text"
                 value="<?php echo esc_attr($title); ?>">
         </p>
 
         <p>
-            <label for="<?php echo $this->get_field_id('kota'); ?>">Kota Default:</label>
-            <select class="widefat" id="<?php echo $this->get_field_id('kota'); ?>"
-                name="<?php echo $this->get_field_name('kota'); ?>">
-                <option value="">Pilih Kota...</option>
+            <label for="<?php echo esc_attr($this->get_field_id('kota')); ?>">
+                <?php esc_html_e('Kota Default:', 'jadwal-sholat'); ?>
+            </label>
+            <select class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('kota')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('kota')); ?>">
+                <option value=""><?php esc_html_e('Pilih Kota...', 'jadwal-sholat'); ?></option>
                 <?php if ($kota_list) : ?>
                     <?php foreach ($kota_list as $kota_item) : ?>
                         <option value="<?php echo esc_attr($kota_item['id']); ?>"
@@ -87,9 +103,12 @@ class Jadwal_Sholat_Widget extends WP_Widget
         </p>
 
         <p>
-            <label for="<?php echo $this->get_field_id('tema'); ?>">Tema Desain:</label>
-            <select class="widefat" id="<?php echo $this->get_field_id('tema'); ?>"
-                name="<?php echo $this->get_field_name('tema'); ?>">
+            <label for="<?php echo esc_attr($this->get_field_id('tema')); ?>">
+                <?php esc_html_e('Tema Desain:', 'jadwal-sholat'); ?>
+            </label>
+            <select class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('tema')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('tema')); ?>">
                 <option value="modern" <?php selected($tema, 'modern'); ?>>Modern</option>
                 <option value="islamic" <?php selected($tema, 'islamic'); ?>>Islamic</option>
                 <option value="minimal" <?php selected($tema, 'minimal'); ?>>Minimal</option>
@@ -97,15 +116,16 @@ class Jadwal_Sholat_Widget extends WP_Widget
             </select>
         </p>
 
+
 <?php
     }
 
     public function update($new_instance, $old_instance)
     {
         $instance = array();
-        $instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
-        $instance['kota'] = (!empty($new_instance['kota'])) ? strip_tags($new_instance['kota']) : '';
-        $instance['tema'] = (!empty($new_instance['tema'])) ? strip_tags($new_instance['tema']) : 'modern';
+        $instance['title'] = ! empty($new_instance['title']) ? wp_strip_all_tags($new_instance['title']) : '';
+        $instance['kota']  = ! empty($new_instance['kota'])  ? wp_strip_all_tags($new_instance['kota'])  : '';
+        $instance['tema']  = ! empty($new_instance['tema'])  ? wp_strip_all_tags($new_instance['tema'])  : 'modern';
 
         return $instance;
     }

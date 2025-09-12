@@ -69,7 +69,7 @@ class Jadwal_Sholat
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('jsm_nonce'),
                 'default_kota' => $this->default_kota,
-                'today' => date('Y-m-d'),
+                'today' => gmdate('Y-m-d'),
                 'desain_tema' => $this->desain_tema
             ));
         }
@@ -90,7 +90,9 @@ class Jadwal_Sholat
         <div class="jadwal-sholat-container jsm-tema-<?php echo esc_attr($atts['tema']); ?>" data-kota="<?php echo esc_attr($atts['kota']); ?>">
             <div class="jsm-header">
                 <h3>Jadwal Sholat Hari Ini</h3>
-                <div class="jsm-date-display"><?php echo date_i18n('l, j F Y'); ?></div>
+                <div class="jsm-date-display">
+                    <?php echo esc_html(date_i18n('l, j F Y')); ?>
+                </div>
                 <div class="jsm-controls">
                     <select class="jsm-select-kota jsm-select">
                         <option value="">Pilih Kota...</option>
@@ -142,8 +144,8 @@ class Jadwal_Sholat
         check_ajax_referer('jsm_nonce', 'nonce');
 
         $kota_id = isset($_POST['kota_id']) ? intval($_POST['kota_id']) : 0;
-        $unique_id = isset($_POST['unique_id']) ? sanitize_text_field($_POST['unique_id']) : '';
-        $tanggal = date('Y-m-d'); // Selalu gunakan tanggal hari ini
+        $unique_id = isset($_POST['unique_id']) ? sanitize_text_field(wp_unslash($_POST['unique_id'])) : '';
+        $tanggal = gmdate('Y-m-d'); // Selalu gunakan tanggal hari ini
 
         if (!$kota_id) {
             wp_send_json_error('Pilih kota terlebih dahulu');
@@ -217,8 +219,13 @@ class Jadwal_Sholat
 
             <?php if ($sholat_berikutnya && $waktu_berikutnya) : ?>
                 <div class="jsm-next-prayer">
-                    <p>Sholat berikutnya: <strong><?php echo ucfirst($sholat_berikutnya); ?></strong> pukul <strong><?php echo $waktu_berikutnya; ?></strong></p>
-                    <?php echo $countdown_html; ?>
+                    <p>
+                        Sholat berikutnya:
+                        <strong><?php echo esc_html(ucfirst($sholat_berikutnya)); ?></strong>
+                        pukul
+                        <strong><?php echo esc_html($waktu_berikutnya); ?></strong>
+                    </p>
+                    <?php echo wp_kses_post($countdown_html); ?>
                 </div>
             <?php endif; ?>
 
@@ -254,7 +261,7 @@ class Jadwal_Sholat
             </div>
 
             <div class="jsm-footer">
-                <p>Terakhir diperbarui: <?php echo date('H:i:s'); ?></p>
+                <p>Terakhir diperbarui: <?php echo esc_html(current_time('H:i:s')); ?></p>
             </div>
         </div>
     <?php
@@ -293,7 +300,9 @@ class Jadwal_Sholat
     // PERBAIKAN: Method settings_init harus ada
     public function settings_init()
     {
-        register_setting('jsm_pluginPage', 'jsm_settings');
+        register_setting('jsm_pluginPage', 'jsm_settings', array(
+            'sanitize_callback' => array($this, 'sanitize_settings')
+        ));
 
         add_settings_section(
             'jsm_pluginPage_section',
@@ -317,6 +326,25 @@ class Jadwal_Sholat
             'jsm_pluginPage',
             'jsm_pluginPage_section'
         );
+    }
+
+    public function sanitize_settings($input)
+    {
+        $sanitized = array();
+
+        // Kota Default (ID kota dari API MyQuran)
+        if (isset($input['jsm_default_kota'])) {
+            $sanitized['jsm_default_kota'] = sanitize_text_field($input['jsm_default_kota']);
+        }
+
+        // Tema Desain
+        if (isset($input['jsm_desain_tema'])) {
+            $allowed_themes = array('modern', 'islamic', 'minimal', 'dark');
+            $theme = sanitize_text_field($input['jsm_desain_tema']);
+            $sanitized['jsm_desain_tema'] = in_array($theme, $allowed_themes, true) ? $theme : 'modern';
+        }
+
+        return $sanitized;
     }
 
     // PERBAIKAN: Method default_kota_render harus ada

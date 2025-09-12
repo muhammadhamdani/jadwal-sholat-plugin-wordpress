@@ -16,7 +16,9 @@ function jsm_add_admin_menu()
 
 function jsm_settings_init()
 {
-    register_setting('jsm_pluginPage', 'jsm_settings');
+    register_setting('jsm_pluginPage', 'jsm_settings', array(
+        'sanitize_callback' => 'jsm_sanitize_settings'
+    ));
 
     add_settings_section(
         'jsm_pluginPage_section',
@@ -32,6 +34,18 @@ function jsm_settings_init()
         'jsm_pluginPage',
         'jsm_pluginPage_section'
     );
+}
+
+function jsm_sanitize_settings($input)
+{
+    $output = array();
+
+    // Sanitasi kota default
+    if (isset($input['jsm_default_kota'])) {
+        $output['jsm_default_kota'] = sanitize_text_field($input['jsm_default_kota']);
+    }
+
+    return $output;
 }
 
 function jsm_default_kota_render()
